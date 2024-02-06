@@ -1,9 +1,11 @@
+use strum_macros::EnumString;
+use std::str::FromStr;
 use rand::Rng;
 use serde::{Deserialize, Serialize};
 // use serde_json::Result;
 
 //Step 1: Basic Information
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Origin {
     Accidental,
     BusinessVenture,
@@ -14,7 +16,7 @@ enum Origin {
     OvernightStop,
     WildernessExpert
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Age {
     Recent,
     Established,
@@ -23,7 +25,7 @@ enum Age {
     Ancient,
     Unknown
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Specialty {
     AtypicalShippingMethods,
     ExcellentAndUniqueFood,
@@ -33,7 +35,7 @@ enum Specialty {
     PurchasingConnections,
     UnscrupulousContractors
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Condition {
     Ramshackle,
     Poor,
@@ -41,7 +43,7 @@ enum Condition {
     Good,
     Immaculate
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum VisitorTraffic {
     Vacant,
     Groups,
@@ -49,7 +51,7 @@ enum VisitorTraffic {
     Droves,
     Masses
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Size {
     VerySmall,
     Small,
@@ -57,7 +59,7 @@ enum Size {
     Large,
     VeryLarge
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Environment {
     Coastal,
     Forest,
@@ -71,7 +73,7 @@ enum Environment {
     Desert
 }
 //Step 2:Community
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum ResidentPopulation {
     NearlyDeserted,
     Sparse,
@@ -79,7 +81,7 @@ enum ResidentPopulation {
     Congested,
     Overwhelmed
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Demographics {
     One,
     Two,
@@ -88,7 +90,7 @@ enum Demographics {
     HighAndLow,
     EverChanging
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Disposition {
     Hostile,
     Unfriendly,
@@ -96,7 +98,7 @@ enum Disposition {
     Friendly,
     Open
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum LawEnforcement {
     None,
     Sheriff,
@@ -104,7 +106,7 @@ enum LawEnforcement {
     WellEquipped,
     OverwhelmingPresence
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Leadership {
     NoLeader,
     Hereditary,
@@ -118,7 +120,7 @@ enum Leadership {
     SingleElected,
     AnarchoSyndicalistCommune
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum PopulationWealth {
     Destitute,
     Impoverished,
@@ -127,7 +129,7 @@ enum PopulationWealth {
     Wealthy,
     Affluent
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Crime {
     Regular,
     Common,
@@ -136,7 +138,7 @@ enum Crime {
     Rare
 }
 //Step 3: Points of Interest
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum ShopType {
     Baker,
     Butcher,
@@ -172,10 +174,21 @@ enum ShopType {
 #[derive(Debug,Serialize,Deserialize)]
 struct Shop {
     name: String,
-    shop_type: ShopType
+    shop_type: ShopType,
+    quality: Quality
 }
 
-#[derive(Debug,Serialize,Deserialize)]
+fn roll_num_shops(size: &Size) -> i32 {
+    roll(8) + match size {
+        Size::VerySmall => 2,
+        Size::Small => 4,
+        Size::Medium => 6,
+        Size::Large => 8,
+        Size::VeryLarge => 10
+        }
+}
+
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum ServiceType {
     Barber,
     Bathhouse,
@@ -205,27 +218,37 @@ struct Service {
     hired_help_size: HiredHelpSize
 }
 
-#[derive(Debug,Serialize,Deserialize)]
+fn roll_num_services(size: &Size) -> i32 {
+    roll(6) + match size {
+        Size::VerySmall => 2,
+        Size::Small => 4,
+        Size::Medium => 6,
+        Size::Large => 8,
+        Size::VeryLarge => 10
+        }
+}
+
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum HiredHelpSize {
     Individual,
     Team,
     Guild,
     None
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Quality {
     Poor,
     Good,
     Fine
 }
 
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Alignment {
     Evil,
     Neutral,
     Good
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum PlaceOfWorshipSize {
     Secret,
     Altar,
@@ -234,7 +257,7 @@ enum PlaceOfWorshipSize {
     Temple,
     GreateTemple
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
 enum Fervency {
     Unseen,
     Quiet,
@@ -244,6 +267,7 @@ enum Fervency {
     Zealous
 }
 #[derive(Debug,Serialize,Deserialize)]
+
 struct PlaceOfWorship {
     size: PlaceOfWorshipSize,
     fervency: Fervency,
@@ -251,7 +275,8 @@ struct PlaceOfWorship {
 }
 
 //Part 4: Extra Intrigue
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
+
 enum RecentHistory {
     BenevolenceOfYesteryear,
     Construction,
@@ -260,7 +285,8 @@ enum RecentHistory {
     PopularProducer,
     Wartorn
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
+
 enum Politics {
     BrinkOfWar,
     LawlessRegion,
@@ -269,7 +295,8 @@ enum Politics {
     Peace,
     New
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
+
 enum Event {
     HighClassVisitor,
     Troublemakers,
@@ -278,7 +305,8 @@ enum Event {
     Strangers,
     PublicEmergency
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
+
 enum Opportunities {
     PoliticalIntrigue,
     MissingPerson,
@@ -287,7 +315,8 @@ enum Opportunities {
     Transportation,
     Acquisition
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
+
 enum Weather {
     Good,
     Mild,
@@ -295,7 +324,8 @@ enum Weather {
     Harsh,
     Bad
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
+
 enum DangerLevel {
     EverPresent,
     Frequent,
@@ -303,7 +333,8 @@ enum DangerLevel {
     Uncommon,
     Rare
 }
-#[derive(Debug,Serialize,Deserialize)]
+#[derive(Debug,Serialize,Deserialize,EnumString)]
+
 enum DangerType {
     SuspiciousLocals,
     Raids,
@@ -314,6 +345,7 @@ enum DangerType {
 
 
 #[derive(Debug,Serialize,Deserialize)]
+
 pub struct Settlement {
     name: String,
     origin: Origin,
@@ -553,37 +585,84 @@ fn roll_crime(value: i32) -> Crime {
 
 //Step 3: Places of Interest
 fn random_shop() -> Shop {
+    let quality = match roll (12) {
+        1..=4 => Quality::Poor,
+        5..=10 => Quality::Fine,
+        _ => Quality::Good
+    };
+
     match roll(100) {
-        1..=4 => Shop {name : String::from("Baker"), shop_type: ShopType::Baker},
-        5..=8 => Shop {name : String::from("Butcher"), shop_type: ShopType::Butcher},
-        9..=12 => Shop {name : String::from("Cooper"), shop_type: ShopType::Cooper},
-        13..=16 => Shop {name : String::from("Carpenter"), shop_type: ShopType::Carpenter},
-        17..=24 => Shop {name : String::from("General Store"), shop_type: ShopType::GeneralStore},
-        25..=28 => Shop {name : String::from("Herbalist"), shop_type: ShopType::Herbalist},
-        29..=36 => Shop {name : String::from("Smithy"), shop_type: ShopType::Smithy},
-        37..=40 => Shop {name : String::from("Tailor"), shop_type: ShopType::Tailor},
-        41..=44 => Shop {name : String::from("Tanner/Taxidermist"), shop_type: ShopType::TannerTaxidermist},
-        45..=48 => Shop {name : String::from("Thatcher"), shop_type: ShopType::Thatcher},
-        49..=52 => Shop {name : String::from("Wainwrite"), shop_type: ShopType::Wainwrite},
-        53..=56 => Shop {name : String::from("Weaver"), shop_type: ShopType::Weaver},
-        57..=59 => Shop {name : String::from("Alchemist"), shop_type: ShopType::Alchemist},
-        60..=62 => Shop {name : String::from("Artist"), shop_type: ShopType::Artist},
-        63..=65 => Shop {name : String::from("Bank & Exchange"), shop_type: ShopType::BankAndExchange},
-        66..=68 => Shop {name : String::from("Cobbler"), shop_type: ShopType::Cobbler},
-        69..=71 => Shop {name : String::from("Foundry/Smelting"), shop_type: ShopType::FoundrySmelting},
-        72..=74 => Shop {name : String::from("Mill"), shop_type: ShopType::Mill},
-        75..=77 => Shop {name : String::from("Textile"), shop_type: ShopType::Textile},
-        78..=80 => Shop {name : String::from("Shipwrite"), shop_type: ShopType::Shipwrite},
-        81..=82 => Shop {name : String::from("Rare Botanicals"), shop_type: ShopType::RareBotanicals},
-        83..=84 => Shop {name : String::from("Luxury Furnishing"), shop_type: ShopType::LuxuryFurnishing},
-        85..=86 => Shop {name : String::from("Rare Libations & Fare"), shop_type: ShopType::RareLibationsAndFare},
-        87..=88 => Shop {name : String::from("Rare Trade Goods"), shop_type: ShopType::RareTradeGoods},
-        89..=90 => Shop {name : String::from("Magic Shop Armor"), shop_type: ShopType::MagicShopArmor},
-        91..=92 => Shop {name : String::from("Magic Shop Books"), shop_type: ShopType::MagicShopBooks},
-        93..=94 => Shop {name : String::from("Magic Shop Books"), shop_type: ShopType::MagicShopClothing},
-        95..=96 => Shop {name : String::from("Magic Shop Jewelry"), shop_type: ShopType::MagicShopJewelry},
-        97..=98 => Shop {name : String::from("Magic Shop Weapons"), shop_type: ShopType::MagicShopWeapons},
-        _=> Shop {name : String::from("Magic Shop Misellaneous"), shop_type: ShopType::MagicShopMisellaneous},
+        1..=4 => Shop {name : String::from("Baker"), shop_type: ShopType::Baker, quality: quality},
+        5..=8 => Shop {name : String::from("Butcher"), shop_type: ShopType::Butcher, quality: quality},
+        9..=12 => Shop {name : String::from("Cooper"), shop_type: ShopType::Cooper, quality: quality},
+        13..=16 => Shop {name : String::from("Carpenter"), shop_type: ShopType::Carpenter, quality: quality},
+        17..=24 => Shop {name : String::from("General Store"), shop_type: ShopType::GeneralStore, quality: quality},
+        25..=28 => Shop {name : String::from("Herbalist"), shop_type: ShopType::Herbalist, quality: quality},
+        29..=36 => Shop {name : String::from("Smithy"), shop_type: ShopType::Smithy, quality: quality},
+        37..=40 => Shop {name : String::from("Tailor"), shop_type: ShopType::Tailor, quality: quality},
+        41..=44 => Shop {name : String::from("Tanner/Taxidermist"), shop_type: ShopType::TannerTaxidermist, quality: quality},
+        45..=48 => Shop {name : String::from("Thatcher"), shop_type: ShopType::Thatcher, quality: quality},
+        49..=52 => Shop {name : String::from("Wainwrite"), shop_type: ShopType::Wainwrite, quality: quality},
+        53..=56 => Shop {name : String::from("Weaver"), shop_type: ShopType::Weaver, quality: quality},
+        57..=59 => Shop {name : String::from("Alchemist"), shop_type: ShopType::Alchemist, quality: quality},
+        60..=62 => Shop {name : String::from("Artist"), shop_type: ShopType::Artist, quality: quality},
+        63..=65 => Shop {name : String::from("Bank & Exchange"), shop_type: ShopType::BankAndExchange, quality: quality},
+        66..=68 => Shop {name : String::from("Cobbler"), shop_type: ShopType::Cobbler, quality: quality},
+        69..=71 => Shop {name : String::from("Foundry/Smelting"), shop_type: ShopType::FoundrySmelting, quality: quality},
+        72..=74 => Shop {name : String::from("Mill"), shop_type: ShopType::Mill, quality: quality},
+        75..=77 => Shop {name : String::from("Textile"), shop_type: ShopType::Textile, quality: quality},
+        78..=80 => Shop {name : String::from("Shipwrite"), shop_type: ShopType::Shipwrite, quality: quality},
+        81..=82 => Shop {name : String::from("Rare Botanicals"), shop_type: ShopType::RareBotanicals, quality: quality},
+        83..=84 => Shop {name : String::from("Luxury Furnishing"), shop_type: ShopType::LuxuryFurnishing, quality: quality},
+        85..=86 => Shop {name : String::from("Rare Libations & Fare"), shop_type: ShopType::RareLibationsAndFare, quality: quality},
+        87..=88 => Shop {name : String::from("Rare Trade Goods"), shop_type: ShopType::RareTradeGoods, quality: quality},
+        89..=90 => Shop {name : String::from("Magic Shop Armor"), shop_type: ShopType::MagicShopArmor, quality: quality},
+        91..=92 => Shop {name : String::from("Magic Shop Books"), shop_type: ShopType::MagicShopBooks, quality: quality},
+        93..=94 => Shop {name : String::from("Magic Shop Books"), shop_type: ShopType::MagicShopClothing, quality: quality},
+        95..=96 => Shop {name : String::from("Magic Shop Jewelry"), shop_type: ShopType::MagicShopJewelry, quality: quality},
+        97..=98 => Shop {name : String::from("Magic Shop Weapons"), shop_type: ShopType::MagicShopWeapons, quality: quality},
+        _=> Shop {name : String::from("Magic Shop Misellaneous"), shop_type: ShopType::MagicShopMisellaneous, quality: quality},
+    }
+}
+
+fn roll_shop(val: i32) -> Shop {
+    let quality = match roll(12) + val {
+        rolled_value if rolled_value <= 4 => Quality::Poor,
+        5..=10 => Quality::Fine,
+        _ => Quality::Good
+    };
+
+    match roll(100) {
+        1..=4 => Shop {name : String::from("Baker"), shop_type: ShopType::Baker, quality: quality},
+        5..=8 => Shop {name : String::from("Butcher"), shop_type: ShopType::Butcher, quality: quality},
+        9..=12 => Shop {name : String::from("Cooper"), shop_type: ShopType::Cooper, quality: quality},
+        13..=16 => Shop {name : String::from("Carpenter"), shop_type: ShopType::Carpenter, quality: quality},
+        17..=24 => Shop {name : String::from("General Store"), shop_type: ShopType::GeneralStore, quality: quality},
+        25..=28 => Shop {name : String::from("Herbalist"), shop_type: ShopType::Herbalist, quality: quality},
+        29..=36 => Shop {name : String::from("Smithy"), shop_type: ShopType::Smithy, quality: quality},
+        37..=40 => Shop {name : String::from("Tailor"), shop_type: ShopType::Tailor, quality: quality},
+        41..=44 => Shop {name : String::from("Tanner/Taxidermist"), shop_type: ShopType::TannerTaxidermist, quality: quality},
+        45..=48 => Shop {name : String::from("Thatcher"), shop_type: ShopType::Thatcher, quality: quality},
+        49..=52 => Shop {name : String::from("Wainwrite"), shop_type: ShopType::Wainwrite, quality: quality},
+        53..=56 => Shop {name : String::from("Weaver"), shop_type: ShopType::Weaver, quality: quality},
+        57..=59 => Shop {name : String::from("Alchemist"), shop_type: ShopType::Alchemist, quality: quality},
+        60..=62 => Shop {name : String::from("Artist"), shop_type: ShopType::Artist, quality: quality},
+        63..=65 => Shop {name : String::from("Bank & Exchange"), shop_type: ShopType::BankAndExchange, quality: quality},
+        66..=68 => Shop {name : String::from("Cobbler"), shop_type: ShopType::Cobbler, quality: quality},
+        69..=71 => Shop {name : String::from("Foundry/Smelting"), shop_type: ShopType::FoundrySmelting, quality: quality},
+        72..=74 => Shop {name : String::from("Mill"), shop_type: ShopType::Mill, quality: quality},
+        75..=77 => Shop {name : String::from("Textile"), shop_type: ShopType::Textile, quality: quality},
+        78..=80 => Shop {name : String::from("Shipwrite"), shop_type: ShopType::Shipwrite, quality: quality},
+        81..=82 => Shop {name : String::from("Rare Botanicals"), shop_type: ShopType::RareBotanicals, quality: quality},
+        83..=84 => Shop {name : String::from("Luxury Furnishing"), shop_type: ShopType::LuxuryFurnishing, quality: quality},
+        85..=86 => Shop {name : String::from("Rare Libations & Fare"), shop_type: ShopType::RareLibationsAndFare, quality: quality},
+        87..=88 => Shop {name : String::from("Rare Trade Goods"), shop_type: ShopType::RareTradeGoods, quality: quality},
+        89..=90 => Shop {name : String::from("Magic Shop Armor"), shop_type: ShopType::MagicShopArmor, quality: quality},
+        91..=92 => Shop {name : String::from("Magic Shop Books"), shop_type: ShopType::MagicShopBooks, quality: quality},
+        93..=94 => Shop {name : String::from("Magic Shop Books"), shop_type: ShopType::MagicShopClothing, quality: quality},
+        95..=96 => Shop {name : String::from("Magic Shop Jewelry"), shop_type: ShopType::MagicShopJewelry, quality: quality},
+        97..=98 => Shop {name : String::from("Magic Shop Weapons"), shop_type: ShopType::MagicShopWeapons, quality: quality},
+        _=> Shop {name : String::from("Magic Shop Misellaneous"), shop_type: ShopType::MagicShopMisellaneous, quality: quality},
     }
 }
 
@@ -733,6 +812,11 @@ pub struct Parameters {
     pub size: Option<String>,
     pub environment: Option<String>,
     pub resident_population: Option<String>,
+    pub demographics: Option<String>,
+    pub disposition: Option<String>,
+    pub law_enforcement: Option<String>,
+    pub leadership: Option<String>,
+    pub population_wealth: Option<String>,
     pub number_shops: Option<i32>,
     pub number_services: Option<i32>,
     pub rare_magic: Option<bool>
@@ -776,8 +860,15 @@ pub fn default_settlement() -> Settlement {
 pub fn generate_settlement (par: Parameters) -> Settlement {
     let mut settlement: Settlement = default_settlement();
     //Step 1: Basics
-    settlement.origin = random_origin();
-    settlement.specialty = random_specialty();
+    settlement.origin = match par.origin {
+        Some(val) =>  Origin::from_str(&val).unwrap(),
+        None => random_origin()
+    };
+    settlement.specialty = match par.specialty {
+        Some(val) =>  Specialty::from_str(&val).unwrap(),
+        None => random_specialty()
+    };
+
     if let Specialty::UnscrupulousContractors = settlement.specialty {
         let help_size: HiredHelpSize = match roll(3) {
             1 => HiredHelpSize::Individual,
@@ -798,8 +889,11 @@ pub fn generate_settlement (par: Parameters) -> Settlement {
             9 => settlement.services.push(Service {name: String::from("Priestly Guidance"), service_type: ServiceType::PriestlyGuidance, hired_help_size: help_size}),
             _ => settlement.services.push(Service {name: String::from("Hands of the Divine"), service_type: ServiceType::HandsOfTheDivine, hired_help_size: help_size})   
         }
-    }
-    settlement.age = random_age();
+    };
+    settlement.age = match par.age {
+        Some(val) =>  Age::from_str(&val).unwrap(),
+        None => random_age()
+    };
     let visitor_traffic_modifier = match settlement.age {
         Age::Recent => -1,
         Age::Established => 0,
@@ -809,7 +903,10 @@ pub fn generate_settlement (par: Parameters) -> Settlement {
         Age::Unknown => 4
     };
 
-    settlement.condition = random_condition();
+    settlement.condition = match par.condition {
+        Some(val) =>  Condition::from_str(&val).unwrap(),
+        None => random_condition()
+    };
     let population_wealth_modifier = match settlement.condition {
         Condition::Ramshackle => -6,
         Condition::Poor => -3,
@@ -845,10 +942,22 @@ pub fn generate_settlement (par: Parameters) -> Settlement {
         },
     };
 
-    settlement.size = roll_size(size_modifier);
-    settlement.environment = random_environment();
+    settlement.size = match par.size {
+        Some(val) =>  Size::from_str(&val).unwrap(),
+        None => roll_size(size_modifier)
+    };
+    // settlement.size = roll_size(size_modifier);
+    settlement.environment = match par.environment {
+        Some(val) =>  Environment::from_str(&val).unwrap(),
+        None => random_environment()
+    };
+    // settlement.environment = random_environment();
     //Step 2: Community
-    settlement.resident_population = random_resident_population();
+    settlement.resident_population = match par.resident_population {
+        Some(val) =>  ResidentPopulation::from_str(&val).unwrap(),
+        None => random_resident_population()
+    };
+    // settlement.resident_population = random_resident_population();
     crime_modifier = match settlement.resident_population {
         ResidentPopulation::NearlyDeserted => crime_modifier + 2,
         ResidentPopulation::Sparse => crime_modifier + 1,
@@ -857,10 +966,21 @@ pub fn generate_settlement (par: Parameters) -> Settlement {
         ResidentPopulation::Overwhelmed => crime_modifier - 2
     };
 
-    settlement.demographics = random_demographics();
-    settlement.disposition = random_disposition();
-
-    settlement.law_enforcement = random_law_enforcement();
+    settlement.demographics = match par.demographics {
+        Some(val) =>  Demographics::from_str(&val).unwrap(),
+        None => random_demographics()
+    };
+    // settlement.demographics = random_demographics();
+    settlement.disposition = match par.disposition {
+        Some(val) =>  Disposition::from_str(&val).unwrap(),
+        None => random_disposition()
+    };
+    // settlement.disposition = random_disposition();
+    settlement.law_enforcement = match par.law_enforcement {
+        Some(val) =>  LawEnforcement::from_str(&val).unwrap(),
+        None => random_law_enforcement()
+    };
+    // settlement.law_enforcement = random_law_enforcement();
     crime_modifier = match settlement.law_enforcement {
         LawEnforcement::None => crime_modifier - 8,
         LawEnforcement::Sheriff => crime_modifier - 4,
@@ -869,8 +989,16 @@ pub fn generate_settlement (par: Parameters) -> Settlement {
         LawEnforcement::OverwhelmingPresence => crime_modifier + 8,
     };
 
-    settlement.leadership = random_leadership();
-    settlement.population_wealth = roll_population_wealth(population_wealth_modifier);
+    settlement.leadership = match par.leadership {
+        Some(val) =>  Leadership::from_str(&val).unwrap(),
+        None => random_leadership()
+    };
+    // settlement.leadership = random_leadership();
+    settlement.population_wealth = match par.population_wealth {
+        Some(val) =>  PopulationWealth::from_str(&val).unwrap(),
+        None => roll_population_wealth(population_wealth_modifier)
+    };
+    // settlement.population_wealth = roll_population_wealth(population_wealth_modifier);
 
     let mut quality_modifier = 0;
     match settlement.population_wealth {
@@ -903,25 +1031,27 @@ pub fn generate_settlement (par: Parameters) -> Settlement {
     settlement.crime = roll_crime(crime_modifier);
 
     //Step 3: Points of Interest
-    let number_of_shops = match settlement.size {
-        Size::VerySmall => roll(8) + 2,
-        Size::Small => roll(8) + 4,
-        Size::Medium => roll(8) + 6,
-        Size::Large => roll(8) + 8,
-        Size::VeryLarge => roll(8) + 10
+    let number_of_shops = match par.number_shops {
+        Some(val) => if val >= 0 && val <=9  {
+            val
+        } else {
+            roll_num_shops(&settlement.size)
+        },
+        None => roll_num_shops(&settlement.size)
     };
 
     for _ in 0..number_of_shops {
-        settlement.shops.push(random_shop());
+        settlement.shops.push(roll_shop(quality_modifier));
     };
     
-    let mut number_of_services = match settlement.size {
-        Size::VerySmall => roll(6),
-        Size::Small => roll(6) + 1,
-        Size::Medium => roll(6) + 3,
-        Size::Large => roll(6) + 5,
-        Size::VeryLarge => roll(6) + 7
-    };
+    let mut number_of_services = match par.number_services {
+            Some(val) => if val >= 0 && val <=9  {
+                val
+            } else {
+                roll_num_shops(&settlement.size)
+            },
+            None => roll_num_shops(&settlement.size)
+        };
 
     if settlement.services.len() > 1 {
         number_of_services = number_of_services - 1;
